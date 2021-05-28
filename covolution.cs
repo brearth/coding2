@@ -47,53 +47,55 @@ namespace ConsoleApp54
             Console.Write("Input address of the result data : ");
             string result = Console.ReadLine();
 
-            double[,] outputimageinfo;
+            double[,] outputimageinfo;       
 
             outputimageinfo = CovolutionKernel(AddConvolutionKernel(image_arr), image_arr.GetLength(0), image_arr.GetLength(1), data_arr);
             WriteImageDataToFile(result, outputimageinfo);
+
+
         }
         static double[,] AddConvolutionKernel(double[,] Readinfo)// add row col input condition for readinfo by i mod 5 + 4
         {
             int addrow = 7;
             int addcollum = 7;
-            double[,] n = new double[addrow, addcollum];
+            double[,] newarrcol = new double[addrow, addcollum];
             int i;
-            int j = 0;
-            for (i = 0 ; addrow < 0; i++)
+            int l = 0;
+            for (i = 0; addrow < 0; i++)
             {
-                while (j < addcollum)
-                {                  
-                    n[i, j] = Readinfo[i % 5 + 4, j % 5 + 4];
-                    i++;
+                while (l < addcollum)
+                {
+                    newarrcol[i, l] += Readinfo[(((i * 2) / 2) * 1 + 4) % 5, (((l * 2) / 2) * 1 + 4) % 5];
+                    j++;
                 }
             }
-            return Readinfo;
+            return newarrcol;
         }
-        static double [,] CovolutionKernel (double[,]adddataof_arr, int col_of_arr ,int row_of_arr,double[,]covolution)
+        static double[,] CovolutionKernel(double[,] adddataof_arr, int col_of_arr, int row_of_arr, double[,] covolution)
         {
             double[,] out_arr_data = new double[col_of_arr, row_of_arr];
-          
+
 
             for (int i = 0; i < col_of_arr; i++)
             {
-                for (int j = 0; j < row_of_arr; j++)
+                for (int l = 0; l < row_of_arr; l++)
                 {
-                    for (int k = 0; j < covolution.GetLength(0); k++)
+                    for (int p = 0; p < covolution.GetLength(0); p++)
                     {
-                         for (int p = 0; p < covolution.GetLength(1);p++)
+                        for (int d = 0; d < covolution.GetLength(1); d++)
                         {
 
-                            out_arr_data[j, i] = out_arr_data[j, i]
+                            out_arr_data[i, l] = out_arr_data[i, l]
 
-                                               + adddataof_arr[k + j, p + i]
+                                               + adddataof_arr[p + i, d + l]
 
-                                               * covolution[k, p] ;
+                                               * covolution[p, d];
                             p++;
                         }
                     }
                 }
             }
             return out_arr_data;
-        }    
+        }
     }
 }
